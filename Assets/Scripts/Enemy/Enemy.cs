@@ -28,10 +28,12 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator CauseDamage()
     {
+        var waitForOneSecond = new WaitForSeconds(1.0f);
+
         while (_player != null)
         {
             _player.TakeDamage(_damage);
-            yield return new WaitForSeconds(1.0f);
+            yield return waitForOneSecond;
         }
     }
 
