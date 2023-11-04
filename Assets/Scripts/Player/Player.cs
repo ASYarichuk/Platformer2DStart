@@ -1,14 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    [SerializeField] private int _health = 10;
     [SerializeField] private int _damage = 2;
+    private int _currentHealth = 2;
 
     private int _maxHealth = 10;
 
     private Enemy _enemy;
+
+    private void Awake()
+    {
+        _currentHealth = Health;
+    }
 
     private void OnCollisionEnter2D(Collision2D enemy)
     {
@@ -39,25 +44,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
-    {
-        _health -= damage;
-
-        if (_health <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     public void TakeAidKit(int amountHealth)
     {
-        if (_health + amountHealth >= _maxHealth)
+        if (_currentHealth + amountHealth >= _maxHealth)
         {
-            _health = _maxHealth;
+            _currentHealth = _maxHealth;
         }
         else
         {
-            _health += amountHealth;
+            _currentHealth += amountHealth;
         }
     }
 }

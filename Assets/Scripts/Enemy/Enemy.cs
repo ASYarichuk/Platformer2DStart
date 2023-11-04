@@ -1,18 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    [SerializeField] private int _health = 3;
     [SerializeField] private int _damage = 1;
 
     private Player _player;
 
     private void OnCollisionEnter2D(Collision2D enemy)
     {
-        if (enemy.gameObject.GetComponent<Player>())
+        if (enemy.gameObject.TryGetComponent(out Player player))
         {
-            _player = enemy.gameObject.GetComponent<Player>();
+            _player = player;
             StartCoroutine(CauseDamage());
         }
     }
@@ -34,16 +33,6 @@ public class Enemy : MonoBehaviour
         {
             _player.TakeDamage(_damage);
             yield return waitForOneSecond;
-        }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        _health -= damage;
-
-        if (_health <= 0)
-        {
-            Destroy(gameObject);
         }
     }
 }

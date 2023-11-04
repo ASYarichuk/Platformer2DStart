@@ -12,6 +12,9 @@ public class PlayerMover : MonoBehaviour
 
     private readonly string _nameTagGround = "Ground";
 
+    private readonly Vector3 _lookingToRight = new (1, 1, 1);
+    private readonly Vector3 _lookingToLeft = new (-1, 1, 1);
+
     private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -20,7 +23,7 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        CheckInput();
+        HandleInput();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -39,18 +42,20 @@ public class PlayerMover : MonoBehaviour
         }
     }
 
-    private void CheckInput()
+    private void HandleInput()
     {
+        float moveInput = Input.GetAxis("Horizontal");
+
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(_speed * Time.deltaTime, 0, 0);
-            transform.localScale = new Vector3(1, 1, 1);
+            _rigidbody2D.velocity = new Vector2(moveInput * _speed, _rigidbody2D.velocity.y);
+            transform.localScale = _lookingToRight;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(_speed * Time.deltaTime * -1, 0, 0);
-            transform.localScale = new Vector3(-1, 1, 1);
+            _rigidbody2D.velocity = new Vector2(moveInput * _speed, _rigidbody2D.velocity.y);
+            transform.localScale = _lookingToLeft;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
